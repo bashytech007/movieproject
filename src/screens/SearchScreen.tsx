@@ -12,12 +12,13 @@ import useFetch from '../hooks/useFetch';
 import { fetchMovies, getImageUrl } from '../services/api';
 import SearchBar from '../components/SearchBar';
 import { useTrendingStore } from '../store/useTrendingStore';
-import { COLORS } from '../constants/color'; 
+// import { colors } from '../constants/color'; 
+import { useThemeStore } from '../store/useThemeStore';
 
 const SearchScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { updateSearchCount } = useTrendingStore();
-
+const colors = useThemeStore(state => state.colors);
   const {
     data: movies,
     loading,
@@ -25,6 +26,62 @@ const SearchScreen = () => {
     refetch: loadMovies,
     reset,
   } = useFetch(() => fetchMovies({ query: searchQuery }), false);
+
+
+  const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  list: {
+    paddingHorizontal: 16,
+  },
+  grid: {
+    justifyContent: 'center',
+    gap: 16,
+    marginVertical: 16,
+  },
+  listContent: {
+    paddingBottom: 100,
+  },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 60,
+    alignItems: 'center',
+  },
+  logo: {
+    fontSize: 40,
+  },
+  searchContainer: {
+    marginVertical: 20,
+  },
+  loader: {
+    marginVertical: 12,
+  },
+  errorText: {
+    color: colors.error,
+    paddingHorizontal: 16,
+    marginVertical: 12,
+  },
+  resultsText: {
+    fontSize: 18,
+    color: colors.text,
+    fontWeight: 'bold',
+  },
+  queryText: {
+    color: colors.accent,
+  },
+  emptyContainer: {
+    marginTop: 40,
+    paddingHorizontal: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: colors.textSecondary,
+  },
+});
 
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
@@ -82,7 +139,7 @@ const SearchScreen = () => {
               />
             </View>
             {loading && (
-              <ActivityIndicator size="large" color={COLORS.primary} style={styles.loader} />
+              <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
             )}
             {error && (
               <Text style={styles.errorText}>Error: {error.message}</Text>
@@ -113,59 +170,6 @@ const SearchScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  list: {
-    paddingHorizontal: 16,
-  },
-  grid: {
-    justifyContent: 'center',
-    gap: 16,
-    marginVertical: 16,
-  },
-  listContent: {
-    paddingBottom: 100,
-  },
-  header: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 60,
-    alignItems: 'center',
-  },
-  logo: {
-    fontSize: 40,
-  },
-  searchContainer: {
-    marginVertical: 20,
-  },
-  loader: {
-    marginVertical: 12,
-  },
-  errorText: {
-    color: COLORS.error,
-    paddingHorizontal: 16,
-    marginVertical: 12,
-  },
-  resultsText: {
-    fontSize: 18,
-    color: COLORS.text,
-    fontWeight: 'bold',
-  },
-  queryText: {
-    color: COLORS.accent,
-  },
-  emptyContainer: {
-    marginTop: 40,
-    paddingHorizontal: 16,
-  },
-  emptyText: {
-    textAlign: 'center',
-    color: COLORS.textSecondary,
-  },
-});
+
 
 export default SearchScreen;

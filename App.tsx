@@ -40,22 +40,28 @@ import { StatusBar } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { useFavoritesStore } from './src/store/useFavoritesStore';
 import { useTrendingStore } from './src/store/useTrendingStore';
+import { useThemeStore } from './src/store/useThemeStore';
+
 
 function App() {
   const loadFavorites = useFavoritesStore(state => state.loadFavorites);
   const loadTrending = useTrendingStore(state => state.loadTrending);
+   const loadTheme = useThemeStore(state => state.loadTheme); // ✅ Add this
+  const isDark = useThemeStore(state => state.isDark); // ✅ Add this
 
   useEffect(() => {
-    // Load saved data on app start
+    
     loadFavorites();
     loadTrending();
+      loadTrending();
+    loadTheme();
   }, []);
 
   return (
     <>
       <StatusBar
-        barStyle="light-content"
-        backgroundColor="#121212"
+        barStyle={isDark ? 'light-content' : 'dark-content'} 
+        backgroundColor={isDark ? '#121212' : '#FFFFFF'} 
         translucent={false}
       />
       <AppNavigator />

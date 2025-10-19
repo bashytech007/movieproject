@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
 import { Movie } from '../types/movie';
 import { getImageUrl } from '../services/api';
-import { COLORS } from '../constants/color';
+import { colors } from '../constants/color';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 180,
     borderRadius: 8,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
   },
   title: {
-    color: COLORS.text,
+    color: colors.text,
     fontSize: 12,
     fontWeight: 'bold',
     marginTop: 8,
@@ -62,13 +62,13 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   rating: {
-    color: COLORS.text,
+    color: colors.text,
     fontSize: 11,
     fontWeight: 'bold',
     marginRight: 8,
   },
   year: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
     fontSize: 11,
   },
 });

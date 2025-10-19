@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { RootStackParamList, TabParamList } from '../types/navigation';
-import { COLORS } from '../constants/color';
+import { colors } from '../constants/color';
 
 // Screens
 import HomeScreen from '../screens/HomeScreen';
@@ -25,15 +25,15 @@ function TabNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: COLORS.surface,
-          borderTopColor: COLORS.border,
+          backgroundColor: colors.surface,
+          borderTopColor: colors.border,
           borderTopWidth: 1,
           height: 70,
           paddingBottom: 10,
           paddingTop: 10,
         },
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: COLORS.textSecondary,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '600',
@@ -115,6 +115,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
   },
   iconContainerFocused: {
-    backgroundColor: `${COLORS.primary}22`,
+    backgroundColor: `${colors.primary}22`,
   },
 });

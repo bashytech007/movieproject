@@ -1,6 +1,3 @@
-// ============================================
-// File: src/screens/HomeScreen.tsx
-// ============================================
 import {
   View,
   Text,
@@ -19,14 +16,16 @@ import { fetchMovies } from '../services/api';
 import MovieCard from '../components/MovieCard';
 import TrendingCard from '../components/TrendingCard';
 import { useTrendingStore } from '../store/useTrendingStore';
-import { COLORS } from '../constants/color';
+import ThemeToggle from '../components/ThemeToggle';
+import { useThemeStore } from '../store/useThemeStore';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'MainTabs'>;
 
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp>();
   const { trending, loadTrending, loading: trendingLoading } = useTrendingStore();
-
+  const colors = useThemeStore(state => state.colors); // ✅ Get colors from hook
+  
   const {
     data: movies,
     loading: moviesLoading,
@@ -37,6 +36,69 @@ export default function HomeScreen() {
     loadTrending();
   }, []);
 
+  // ✅ Create styles inside component using colors from hook
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    scrollView: {
+      flex: 1,
+      paddingHorizontal: 16,
+    },
+    scrollContent: {
+      minHeight: '100%',
+      paddingBottom: 32,
+    },
+    logo: {
+      fontSize: 40,
+      textAlign: 'center',
+      marginTop: 60,
+      marginBottom: 20,
+    },
+    loader: {
+      marginTop: 40,
+    },
+    errorText: {
+      color: colors.error,
+      textAlign: 'center',
+      marginTop: 20,
+    },
+    content: {
+      flex: 1,
+      marginTop: 20,
+    },
+    section: {
+      marginTop: 32,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      color: colors.text,
+      fontWeight: 'bold',
+      marginTop: 20,
+      marginBottom: 12,
+    },
+    trendingList: {
+      marginBottom: 16,
+      marginTop: 12,
+    },
+    separator: {
+      width: 16,
+    },
+    movieGrid: {
+      justifyContent: 'flex-start',
+      gap: 16,
+      marginBottom: 16,
+    },
+    movieList: {
+      marginTop: 8,
+    },
+    themeToggleContainer: {
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+  });
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -45,9 +107,11 @@ export default function HomeScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <Text style={styles.logo}>🎬</Text>
-
+        <View style={styles.themeToggleContainer}>
+          <ThemeToggle />
+        </View>
         {moviesLoading || trendingLoading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} style={styles.loader} />
+          <ActivityIndicator size="large" color={colors.primary} style={styles.loader} />
         ) : moviesError ? (
           <Text style={styles.errorText}>Error: {moviesError.message}</Text>
         ) : (
@@ -90,61 +154,3 @@ export default function HomeScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  scrollView: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  scrollContent: {
-    minHeight: '100%',
-    paddingBottom: 32,
-  },
-  logo: {
-    fontSize: 40,
-    textAlign: 'center',
-    marginTop: 60,
-    marginBottom: 20,
-  },
-  loader: {
-    marginTop: 40,
-  },
-  errorText: {
-    color: COLORS.error,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  content: {
-    flex: 1,
-    marginTop: 20,
-  },
-  section: {
-    marginTop: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    color: COLORS.text,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 12,
-  },
-  trendingList: {
-    marginBottom: 16,
-    marginTop: 12,
-  },
-  separator: {
-    width: 16,
-  },
-  movieGrid: {
-    justifyContent: 'flex-start',
-    gap: 16,
-    marginBottom: 16,
-  },
-  movieList: {
-    marginTop: 8,
-  },
-});

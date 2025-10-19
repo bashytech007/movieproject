@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
-import { COLORS } from '../constants/color';
+import { colors } from '../constants/color';
 
 interface Props {
   videoKey: string;
@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
   },
   noTrailer: {
     height: 208,
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
   noTrailerText: {
-    color: COLORS.textSecondary,
+    color: colors.textSecondary,
   },
 });
 

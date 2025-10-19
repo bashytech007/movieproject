@@ -14,12 +14,14 @@ import { fetchMovieDetails, fetchMovieVideos, getImageUrl } from '../services/ap
 import { MovieDetails, MovieVideo } from '../types/movie';
 import TrailerPlayer from '../components/TrailerPlayer';
 import { useFavoritesStore } from '../store/useFavoritesStore';
-import { COLORS } from '../constants/color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useThemeStore } from '../store/useThemeStore';
 
 type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>;
 
 const MovieDetailsScreen = () => {
+  const colors = useThemeStore(state => state.colors); // ✅ Get colors first
+  
   const route = useRoute<MovieDetailsRouteProp>();
   const navigation = useNavigation();
   const { id } = route.params;
@@ -31,6 +33,161 @@ const MovieDetailsScreen = () => {
 
   const { addFavorite, removeFavorite, isFavorite } = useFavoritesStore();
   const favorite = isFavorite(id);
+
+  // ✅ Move styles here, after getting colors
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    loadingContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    errorContainer: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 16,
+    },
+    errorText: {
+      color: colors.error,
+      fontSize: 18,
+    },
+    errorButton: {
+      marginTop: 20,
+      backgroundColor: colors.primary,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 25,
+    },
+    errorButtonText: {
+      color: colors.text,
+      fontWeight: 'bold',
+    },
+    headerContainer: {
+      position: 'relative',
+    },
+    backdrop: {
+      width: '100%',
+      height: 250,
+    },
+    backButton: {
+      position: 'absolute',
+      top: 48,
+      left: 16,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: 12,
+      borderRadius: 20,
+    },
+    favoriteButton: {
+      position: 'absolute',
+      top: 48,
+      right: 16,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      padding: 12,
+      borderRadius: 20,
+    },
+    content: {
+      paddingHorizontal: 16,
+      paddingVertical: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: colors.text,
+      marginBottom: 8,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 16,
+      marginBottom: 16,
+    },
+    ratingContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    star: {
+      color: '#FFD700',
+      fontSize: 18,
+      marginRight: 4,
+    },
+    rating: {
+      color: colors.text,
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+    infoText: {
+      color: colors.textSecondary,
+      fontSize: 14,
+    },
+    genresContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      marginBottom: 16,
+    },
+    genreChip: {
+      backgroundColor: `${colors.primary}33`,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 16,
+    },
+    genreText: {
+      color: colors.accent,
+      fontSize: 12,
+      fontWeight: 'bold',
+    },
+    section: {
+      marginBottom: 20,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: colors.text,
+      marginBottom: 12,
+    },
+    overview: {
+      color: colors.textSecondary,
+      lineHeight: 24,
+      fontSize: 15,
+    },
+    tagline: {
+      fontSize: 16,
+      fontStyle: 'italic',
+      color: colors.textSecondary,
+    },
+    detailRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: 12,
+      paddingBottom: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    detailLabel: {
+      color: colors.textSecondary,
+      fontSize: 14,
+      fontWeight: '600',
+      flex: 1,
+    },
+    detailValue: {
+      color: colors.text,
+      fontSize: 14,
+      flex: 1,
+      textAlign: 'right',
+    },
+    infoDivider: {
+  color: colors.textSecondary,
+  fontSize: 14,
+  marginHorizontal: 8,
+},
+  });
 
   useEffect(() => {
     loadMovieData();
@@ -86,7 +243,7 @@ const MovieDetailsScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
@@ -121,7 +278,7 @@ const MovieDetailsScreen = () => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <Icon name="arrow-back" size={24} color={COLORS.text} />
+            <Icon name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
 
           {/* Favorite Button */}
@@ -132,17 +289,15 @@ const MovieDetailsScreen = () => {
             <Icon
               name={favorite ? 'favorite' : 'favorite-border'}
               size={28}
-              color={favorite ? COLORS.error : COLORS.text}
+              color={favorite ? colors.error : colors.text}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.content}>
-          {/* Title */}
           <Text style={styles.title}>{movie.title}</Text>
 
-          {/* Info Row */}
-          <View style={styles.infoRow}>
+          {/* <View style={styles.infoRow}>
             <View style={styles.ratingContainer}>
               <Text style={styles.star}>★</Text>
               <Text style={styles.rating}>{movie.vote_average.toFixed(1)}</Text>
@@ -151,9 +306,25 @@ const MovieDetailsScreen = () => {
             {movie.runtime && (
               <Text style={styles.infoText}>{movie.runtime} min</Text>
             )}
-          </View>
+          </View> */}
+          <View style={styles.infoRow}>
+  <View style={styles.ratingContainer}>
+    <Text style={styles.star}>★</Text>
+    <Text style={styles.rating}>{movie.vote_average.toFixed(1)}</Text>
+  </View>
+  
+  <Text style={styles.infoDivider}> • </Text>
+  
+  <Text style={styles.infoText}>{movie.release_date?.split('-')[0]}</Text>
+  
+  {movie.runtime && (
+    <>
+      <Text style={styles.infoDivider}> • </Text>
+      <Text style={styles.infoText}>{movie.runtime} min</Text>
+    </>
+  )}
+</View>
 
-          {/* Genres */}
           <View style={styles.genresContainer}>
             {movie.genres.map(genre => (
               <View key={genre.id} style={styles.genreChip}>
@@ -162,7 +333,6 @@ const MovieDetailsScreen = () => {
             ))}
           </View>
 
-          {/* Trailer */}
           {trailer && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Trailer</Text>
@@ -170,7 +340,6 @@ const MovieDetailsScreen = () => {
             </View>
           )}
 
-          {/* Overview */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Overview</Text>
             <Text style={styles.overview}>
@@ -178,144 +347,67 @@ const MovieDetailsScreen = () => {
             </Text>
           </View>
 
-          {/* Tagline */}
           {movie.tagline && (
             <View style={styles.section}>
               <Text style={styles.tagline}>"{movie.tagline}"</Text>
             </View>
           )}
+
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Details</Text>
+            
+            {movie.budget > 0 && (
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Budget</Text>
+                <Text style={styles.detailValue}>
+                  ${(movie.budget / 1000000).toFixed(1)}M
+                </Text>
+              </View>
+            )}
+            
+            {movie.revenue > 0 && (
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Revenue</Text>
+                <Text style={styles.detailValue}>
+                  ${(movie.revenue / 1000000).toFixed(1)}M
+                </Text>
+              </View>
+            )}
+            
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Status</Text>
+              <Text style={styles.detailValue}>{movie.status}</Text>
+            </View>
+            
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Original Language</Text>
+              <Text style={styles.detailValue}>
+                {movie.original_language.toUpperCase()}
+              </Text>
+            </View>
+            
+            {movie.production_companies.length > 0 && (
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Production</Text>
+                <Text style={styles.detailValue}>
+                  {movie.production_companies.slice(0, 2).map(c => c.name).join(', ')}
+                </Text>
+              </View>
+            )}
+
+            {movie.vote_count > 0 && (
+              <View style={styles.detailRow}>
+                <Text style={styles.detailLabel}>Vote Count</Text>
+                <Text style={styles.detailValue}>
+                  {movie.vote_count.toLocaleString()}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  loadingContainer: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  errorContainer: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  errorText: {
-    color: COLORS.error,
-    fontSize: 18,
-  },
-  errorButton: {
-    marginTop: 20,
-    backgroundColor: COLORS.primary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 25,
-  },
-  errorButtonText: {
-    color: COLORS.text,
-    fontWeight: 'bold',
-  },
-  headerContainer: {
-    position: 'relative',
-  },
-  backdrop: {
-    width: '100%',
-    height: 250,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 48,
-    left: 16,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 12,
-    borderRadius: 20,
-  },
-  favoriteButton: {
-    position: 'absolute',
-    top: 48,
-    right: 16,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 12,
-    borderRadius: 20,
-  },
-  content: {
-    paddingHorizontal: 16,
-    paddingVertical: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: 8,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    marginBottom: 16,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  star: {
-    color: '#FFD700',
-    fontSize: 18,
-    marginRight: 4,
-  },
-  rating: {
-    color: COLORS.text,
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  infoText: {
-    color: COLORS.textSecondary,
-    fontSize: 14,
-  },
-  genresContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginBottom: 16,
-  },
-  genreChip: {
-    backgroundColor: `${COLORS.primary}33`,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  genreText: {
-    color: COLORS.accent,
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: 12,
-  },
-  overview: {
-    color: COLORS.textSecondary,
-    lineHeight: 24,
-    fontSize: 15,
-  },
-  tagline: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    color: COLORS.textSecondary,
-  },
-});
 
 export default MovieDetailsScreen;

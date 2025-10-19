@@ -1,7 +1,7 @@
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { COLORS } from '../constants/color';
+import { colors } from '../constants/color';
 
 interface Props {
   placeholder: string;
@@ -15,10 +15,10 @@ const SearchBar = ({ placeholder, onPress, value, onChangeText }: Props) => {
     return (
       <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
         <View style={styles.container}>
-          <Icon name="search" size={24} color={COLORS.accent} />
+          <Icon name="search" size={24} color={colors.accent} />
           <TextInput
             placeholder={placeholder}
-            placeholderTextColor={COLORS.textSecondary}
+            placeholderTextColor={colors.textSecondary}
             value={value}
             editable={false}
             style={styles.input}
@@ -30,12 +30,12 @@ const SearchBar = ({ placeholder, onPress, value, onChangeText }: Props) => {
 
   return (
     <View style={styles.container}>
-      <Icon name="search" size={24} color={COLORS.accent} />
+      <Icon name="search" size={24} color={colors.accent} />
       <TextInput
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
-        placeholderTextColor={COLORS.textSecondary}
+        placeholderTextColor={colors.textSecondary}
         style={styles.input}
       />
     </View>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.surface,
+    backgroundColor: colors.surface,
     borderRadius: 25,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 12,
-    color: COLORS.text,
+    color: colors.text,
     fontSize: 16,
   },
 });
