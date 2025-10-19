@@ -12,12 +12,13 @@ A cross-platform movie discovery app built with React Native CLI, featuring movi
 
 ## 📱 Demo
 
-### Video Demo
-<!-- After recording, replace with your actual video link -->
-https://github.com/bashytech007/movieproject/assets/YOUR_ID/demo-video.mp4
+### Video Demo (Android)
+**Watch on YouTube:**  
+[![Watch Demo](https://img.shields.io/badge/▶️-Watch%20Android%20Demo-red?style=for-the-badge&logo=youtube)](https://youtube.com/shorts/vLRj3JNOb-s)
 
-**Or watch on YouTube:**  
-[![Watch Demo](https://img.shields.io/badge/▶️-Watch%20Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/YOUR_VIDEO_ID)
+**Direct Link:** https://youtube.com/shorts/vLRj3JNOb-s
+
+> **Note:** Demo recorded on Android device. The app is fully cross-platform compatible and works identically on iOS.
 
 ### Screenshots
 <p float="left">
@@ -319,12 +320,12 @@ git push
 - [x] Clean code architecture
 - [x] TypeScript types everywhere
 - [x] Error handling
-- [x] Code splitting/lazy loading (FlatList virtualization)
-- [x] Performance optimizations (view recycling, efficient rendering)
+- [x] Performance optimization
 
 ### Bonus Not Implemented ❌
 - [ ] Animations (react-native-reanimated)
 - [ ] Push notifications
+- [ ] Code splitting/lazy loading
 
 ---
 
@@ -353,6 +354,14 @@ git push
 }
 ```
 
+### Navigation Dependencies
+```json
+{
+  "react-native-screens": "^4.17.1",
+  "react-native-safe-area-context": "^5.6.1",
+  "@react-native-masked-view/masked-view": "^0.3.2"
+}
+```
 
 **Full list:** See `package.json`
 
@@ -511,7 +520,8 @@ npx react-native doctor
 **Aremu Bashir**
 
 - GitHub: [@bashytech007](https://github.com/bashytech007)
-
+- Email: bashytech007@gmail.com
+- Portfolio: [Your Portfolio URL]
 
 ---
 
@@ -535,7 +545,7 @@ MIT License - Feel free to use this project for learning purposes.
 
 For questions or issues:
 - Open an issue on GitHub
-
+- Email: bashytech007@gmail.com
 - Check the [Discussions](https://github.com/bashytech007/movieproject/discussions) tab
 
 ---
